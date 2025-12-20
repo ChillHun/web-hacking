@@ -1,0 +1,27 @@
+#DVWA 접속 시 Burp Suite로 Intercept 되지 않았던 문제 분석
+
+
+#목표 
+DVWA 접속시 Burp Suite로 Intercept 하기
+
+#시도한 것 
+kali linux에서 proxy를 키고 브라우저에서 dvwa로 접속 하였다
+
+#결과
+intercept 되지 않고 dvwa로 접속되었다
+
+#원인 분석
+firefox는 보안때문에 localhost 트래픽을 proxy로 보내지않는다
+
+#원인해결
+1. firefox에서 about:config로 진입
+2. 설정 변경
+network.proxy.allow_hijacking_localhost 값을 true로 변경
+
+#해결결과
+브라우저로 다시 dvwa 접속하면 proxy가 작동하여 intercept 한다
+
+#배운 점
+브라우저는 보안정책에 따라 인해 localhost 트래픽 흐름을 제어하며,
+about:config 설정을 통해 해당 동작을 변경할 수 있음을 이해했다
+
