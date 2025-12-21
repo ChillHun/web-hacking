@@ -21,7 +21,7 @@ Burp Suite Intruder 다수의 요청에 따라 응답 패킷중 Content-Length �
 하지만 이 방법 또한 공격자가 사용자를 로그인을 못하게 하는 방법으로 악용할 수 있다
 
 #배운 점
-트래픽의 응답 결과에 따라 Content-Length 값이 달라진다는 것을 알게 되었고, 
+HTTP 응답 패킷에 따라 Content-Length 값이 달라진다는 것을 알게 되었고, 
 로그인 요청에 따라 지연이나 횟수에 제한을 줘서 Brute Force 공격에 대응할 수 있다는 것을 알게 되었다  
 
    
