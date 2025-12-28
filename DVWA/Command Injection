@@ -1,0 +1,64 @@
+#Command Injection 실습을 기록
+DVWA 환경에서 실습
+
+
+#목적
+Command Injection 실습을 통해 웹 취약점을 알아내고 단계별 대응 방법을 알아본다
+
+#Low 단계
+
+1. 취약코드
+$target = $_REQUEST[ 'ip' ];
+$cmd = shell_exec( 'ping  ' . $target );
+
+2. 취약한 원인
+아무런 검증 없이 쉘에 입력이 된다
+
+#Medium 단계
+
+1. 대응방법
+// Set blacklist
+    $substitutions = array(
+        '&&' => '',
+        ';'  => '',
+    );
+위험한 문자들을 제거하는 방식이다 
+하지만 &&, ;만 막았을 뿐 다른연결 문자로 우회가 가능하다
+
+#High 단계
+
+1. 대응 방법
+  // Set blacklist
+    $substitutions = array(
+        '||' => '',
+        '&'  => '',
+        ';'  => '',
+        '| ' => '',
+        '-'  => '',
+        '$'  => '',
+        '('  => '',
+        ')'  => '',
+        '`'  => '',
+    ); 
+연결해주는 문자를 모두 막은 방식이다
+하지만 연결문자 조합이 다양해서 완전하게 차단은 안된다
+
+#Impossible 단계
+
+1. 대응 방법
+$octet = explode(".", $target );
+
+if (
+    is_numeric( $octet[0] ) &&
+    is_numeric( $octet[1] ) &&
+    is_numeric( $octet[2] ) &&
+    is_numeric( $octet[3] ) &&
+    sizeof( $octet ) == 4
+) {
+    $target = $octet[0].'.'.$octet[1].'.'.$octet[2].'.'.$octet[3];
+}
+입력값을 숫자로만 검사하고 다시 조합하기 때문에 특수문자가 들어갈 수 없다
+
+
+
+
