@@ -1,0 +1,36 @@
+#File Inclusion 실습을 기록
+
+
+#개념 정리
+LFI(Local File Inclusion)
+-서버 내부에 존재하는 파일을 Include 하도록 유도하는 공격이다
+RFI(Remote File Inclusion)
+-외부 서버에 있는 파일을 Include 하여 실행시키는 공격이다
+
+#목적
+File Inclusion 공격을 통해 취약점과 대응방법을 알아봤다
+
+#시도한 것
+1.Low단계
+악성파일을 하나 만들어서 URL에 파일 경로를 적어준다
+하지만 PHP 기본 설정에서는 allow_url_include 옵션이 비활성화되어 있어 외부 URL Include(RFI)가 차단된다
+
+2.Medium단계
+Medium단계에서는 http://, https://, ../를 제거하거나 막아놨다
+그러나 한번만 검사하고 삭제하기 때문에 hthttp://tp:// 이렇게 경로를 입력하면 우회가 가능하다
+하지만 RFI는 PHP 설정 때문에 실제 공격은 실패했다
+
+3.High 단계
+-PHP소스코드
+if( !fnmatch( "file*", $file ) && $file != "include.php" ) {
+    // This isn't the page we want!
+    echo "ERROR: File not found!";
+    exit; 
+fnmatch 명령어를 통해 앞에 file로 시작하거나 include.php파일만 열수있게 만들었다
+하지만 ../는 검사하지않기 때문에 file/../../../../../../../etc/passwd 하면 우회가 가능하다
+
+#원인
+사용자가 URL에 마음대로 파일경로를 지정할 수 있게 설계되서 생기는 문제이다
+
+#대응방법
+꼭 필요한 파일만 Include 하게 설계하고 사용자가 입력으로 Include는 금지하여 대응하는 방법이 있다
