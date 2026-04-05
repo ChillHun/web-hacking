@@ -1,9 +1,0 @@
-<script>
-// 이용자의 페이지 정보에 접근.
-document;
-// 이용자의 페이지에 데이터를 삽입.
-document.write("Hacked By DreamHack !");
-</script>
-
-#페이지 변조 코드
-#출저 드림핵
